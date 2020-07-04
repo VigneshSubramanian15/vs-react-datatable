@@ -1,0 +1,226 @@
+.VSDataTable {
+    margin-top: 15px;
+}
+.VSDataTable .header {
+    margin: 10px 10px;
+}
+.VSDataTable .header .right {
+    float: right;
+    right: 20px;
+    display: flex;
+}
+.VSDataTable .header .right .master-search {
+    position: relative;
+    margin: 0 10px 0 0;
+}
+.VSDataTable .header .right .master-search input {
+    border: 1px solid #cfcfcf;
+    border-radius: 3px;
+    line-height: 25px;
+    outline: none;
+}
+.VSDataTable .header .right .master-search input:focus + label, .VSDataTable .header .right .master-search input:not(:placeholder-shown) + label, .VSDataTable .header .right .master-search input:-webkit-autofill + label {
+    top: -10px;
+    left: 10px;
+}
+.VSDataTable .header .right .master-search label {
+    position: absolute;
+    left: 10px;
+    top: 4px;
+    line-height: 18px;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+    color: #656565;
+    background: #fff;
+    padding: 0 4px;
+    font-weight: normal;
+}
+.VSDataTable .header .right .master-search input:focus {
+    border: 1px solid #656565;
+}
+.VSDataTable table {
+    width: calc(100% - 10px);
+    margin: 10px 5px 5px 5px;
+}
+.VSDataTable table thead th {
+    text-transform: capitalize;
+    cursor: default;
+    background: #fff;
+    border-bottom: 1px solid #cfcfcf;
+    padding: 12px 0;
+    border: none;
+}
+.VSDataTable table thead th:nth-child(1) {
+    border-radius: 7px 0 0 0;
+}
+.VSDataTable table thead th:last-child {
+    border-radius: 0 7px 0 0;
+}
+.VSDataTable table thead .point svg {
+    font-size: 12px;
+}
+.VSDataTable table thead .point svg:nth-child(1) {
+    margin: 0 0 0 3px;
+}
+.VSDataTable table thead .point svg:nth-child(2) {
+    position: relative;
+    left: -4px;
+}
+.VSDataTable table thead .point .active {
+    color: #20b37d !important;
+}
+.VSDataTable table thead .point span {
+    color: #d67600;
+}
+.VSDataTable table thead .point:hover span {
+    color: #20b37d !important;
+    margin: 0;
+    padding: 0;
+}
+.VSDataTable table thead tr:nth-child(1) th {
+    position: sticky;
+    top: 0;
+}
+.VSDataTable table thead tr:nth-child(2) th {
+    position: sticky;
+    top: 40px;
+}
+.VSDataTable table thead .filter .search-input {
+    width: 90%;
+    position: relative;
+}
+.VSDataTable table thead .filter .search-input input {
+    width: 100%;
+}
+.VSDataTable table thead .filter input {
+    border: 1px solid #cfcfcf;
+    border-radius: 3px;
+    line-height: 25px;
+    outline: none;
+}
+.VSDataTable table thead .filter input:focus {
+    border: 1px solid #000;
+}
+.VSDataTable table thead .filter input:focus + label, .VSDataTable table thead .filter input:not(:placeholder-shown) + label, .VSDataTable table thead .filter input:-webkit-autofill + label {
+    top: -10px;
+    left: 10px;
+}
+.VSDataTable table thead .filter label {
+    position: absolute;
+    left: 10px;
+    top: 4px;
+    line-height: 18px;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+    color: #656565;
+    background: #fff;
+    padding: 0 4px;
+    font-weight: normal;
+}
+.VSDataTable table thead .filter input::placeholder {
+    opacity: 0;
+}
+.VSDataTable table thead .filter input::-webkit-outer-spin-button, .VSDataTable table thead .filter input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.VSDataTable table thead .filter input[type="number"] {
+    -moz-appearance: textfield;
+}
+.VSDataTable table thead .filter .range {
+    width: 90%;
+    display: flex;
+    padding: 0 0 0 5%;
+}
+.VSDataTable table thead .filter .range .lablediv {
+    position: relative;
+    width: 100%;
+}
+.VSDataTable table thead .filter .range input {
+    width: 85%;
+}
+.VSDataTable table thead .point {
+    cursor: pointer;
+}
+.VSDataTable table tbody .nodata {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+.VSDataTable table tbody .nodata svg {
+    font-size: 50px;
+}
+.VSDataTable table tbody .nodata p {
+    font-size: 21px;
+    font-family: fantasy;
+}
+.VSDataTable table tbody td {
+    padding: 15px 5px;
+    border: 0;
+    border-style: hidden;
+}
+.VSDataTable table tbody td:nth-child(1) {
+    padding: 15px 10px;
+}
+.VSDataTable table tbody tr:nth-child(even) {
+    border-style: hidden;
+    background-color: rgba(0, 0, 0, 0.04);
+}
+.VSDataTable table tbody tr:nth-child(even):hover {
+    background-color: #ff8f03 94;
+}
+.VSDataTable table tbody tr {
+    transition: all 0.3s ease-in-out;
+}
+.VSDataTable table tbody tr:hover {
+    background-color: #ff8f03 94;
+}
+.VSDataTable table tbody .align-center {
+    text-align: center;
+}
+.VSDataTable table tbody .align-right {
+    text-align: right;
+}
+.VSDataTable .footer {
+    position: relative;
+    background: #fff;
+    padding: 12px 0;
+    border-radius: 0 0 7px 7px;
+}
+.VSDataTable .footer .info {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 0 0 20px;
+}
+.VSDataTable .footer .pagniation {
+    -moz-user-select: none;
+   /* Firefox */
+    -ms-user-select: none;
+   /* Internet Explorer */
+    -khtml-user-select: none;
+   /* KHTML browsers (e.g. Konqueror) */
+    -webkit-user-select: none;
+   /* Chrome, Safari, and Opera */
+    -webkit-touch-callout: none;
+   /* Disable Android and iOS callouts*/
+}
+.VSDataTable .footer .pagniation svg:hover {
+    color: #20b37d;
+}
+.VSDataTable .footer span.show, .VSDataTable .footer .pagniation, .VSDataTable .footer span.entries, .VSDataTable .footer .page {
+    margin: 0 10px;
+    font-size: 18px;
+    font-weight: 500;
+}
+.VSDataTable .footer .right {
+    position: absolute;
+    right: 25px;
+    top: 12px;
+    display: flex;
+}
+.VSDataTable .footer .right select {
+    padding: 5px 15px;
+    border: none;
+    border-radius: 3px;
+}
