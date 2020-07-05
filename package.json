@@ -1,5 +1,5 @@
 {
-	"name": "vs-react-datable",
+	"name": "vs-react-datatable",
 	"version": "0.1.0",
 	"description": "React DataTable Component with Overall Search, Sort and Column Level Search.",
 	"main": "./lib/DATATABLE.js",
@@ -17,6 +17,10 @@
 	"scripts": {
 		"build": "webpack"
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/VigneshSubramanian15/vs-react-datatable.git"
+	  },
 	"peerDependencies": {
 		"prop-types": "^15.6.0",
 		"react": "^16.0.0",

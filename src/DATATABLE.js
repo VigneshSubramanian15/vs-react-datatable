@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
+// import { Multiselect } from "multiselect-react-dropdown";
 import {
 	FaAngleDoubleLeft,
 	FaAngleDoubleRight,
 	FaAngleRight,
-	// FaAngleDown,
-	// FaAngleUp,
 	FaArrowUp,
 	FaArrowDown,
 	FaRegSadTear,
 	FaAngleLeft,
-	FaAngleUp,
 } from "react-icons/fa";
 import PropTypes from "prop-types";
-import "./style.css";
+import "./style.scss";
 export default function DataTable(props) {
-	const completeData = props.row;
+	const completeData = props.columnData;
 	const [column, setcolumn] = useState(completeData);
 	const [pagno, setpage] = useState(0);
 	const [rowcount, setrowcount] = useState(10);
@@ -22,6 +20,7 @@ export default function DataTable(props) {
 	const [rangeValues, setrangeValues] = useState([]);
 	const [headSorted, setHeadsorted] = useState("");
 	const [searchValues, setsearchValues] = useState({});
+	const pageCount = props.pageCount || [10, 20, 50, 100];
 	useEffect(() => {
 		search();
 		// eslint-disable-next-line
@@ -33,7 +32,7 @@ export default function DataTable(props) {
 		let temp = column;
 		let sorted = [];
 		let headtitle = [];
-		props.head.map((val) => headtitle.push(val.title));
+		props.rowData.map((val) => headtitle.push(val.title));
 		let index = headtitle.indexOf(val);
 		try {
 			sorted = temp.sort((a, b) => a[index].localeCompare(b[index]));
@@ -84,8 +83,9 @@ export default function DataTable(props) {
 		});
 	};
 	const search = (fromfiltered) => {
+		console.log(fromfiltered)
 		let filtered = [];
-		let data = (fromfiltered && fromfiltered.length) || completeData;
+		let data = (fromfiltered && fromfiltered.length) ? fromfiltered : completeData;
 		Object.keys(searchValues).map((key) => {
 			filtered.length && (data = filtered);
 			filtered = [];
@@ -132,7 +132,7 @@ export default function DataTable(props) {
 		<div className="VSDataTable">
 			<div className="header">
 				<div className="right">
-					{props.OverallSearch && (
+					{props.overallSearch && (
 						<div className="master-search">
 							<input
 								placeholder=" "
@@ -151,32 +151,34 @@ export default function DataTable(props) {
 			<table>
 				<thead>
 					<tr>
-						{props.DisplayIndex && <th>S.No</th>}
-						{props.head.map((val, i) => {
+						{props.displayIndex && <th>S.No</th>}
+						{props.rowData.map((val, i) => {
 							let active =
 								val.title === headSorted ? "active" : "";
 							return (
 								<th
+									width={val.width}
 									className={"point"}
-									onClick={() => sort(val.title)}
+									onClick={() =>
+										val.sortable && sort(val.title)
+									}
 									key={i}
 								>
 									{val.title.replace(/_/g, " ")}
-									<span className={active}>
+									{val.sortable && <span className={active}>
 										<FaArrowDown /> <FaArrowUp />
-										{/* <FaAngleUp /> <FaAngleDown /> */}
-									</span>
+									</span>}
 								</th>
 							);
 						})}
 					</tr>
-					{!props.OverallSearch && (
+					{!props.overallSearch && (
 						<tr className="filter">
-							<th></th>
-							{props.head.map((val, headIndex) => {
+							{props.displayIndex && <th></th>}
+							{props.rowData.map((val, headIndex) => {
 								let rand = Math.round(Math.random());
 								return val.filter === "search" ? (
-									<th width={val.width}>
+									<th>
 										<div className="search-input">
 											<input
 												id={val.title + rand}
@@ -202,7 +204,7 @@ export default function DataTable(props) {
 										</div>
 									</th>
 								) : val.filter === "range" ? (
-									<th width={val.width}>
+									<th>
 										<div className="range">
 											<div className="lablediv">
 												<input
@@ -236,8 +238,8 @@ export default function DataTable(props) {
 														val.title + rand + 1
 													}
 												>
-													{val.placeholder[0] ||
-														"Min"}
+													{val.placeholder ? val.placeholder[0] ||
+														"Min" : "Min"}
 												</label>
 											</div>
 											<div className="lablediv">
@@ -270,14 +272,14 @@ export default function DataTable(props) {
 												<label
 													htmlFor={val.title + rand}
 												>
-													{val.placeholder[1] ||
-														"Max"}
+													{val.placeholder ? val.placeholder[1] ||
+														"Max" : "Max"}
 												</label>
 											</div>
 										</div>
 									</th>
 								) : (
-									<th width={val.width}></th>
+									<th></th>
 								);
 							})}
 						</tr>
@@ -293,21 +295,22 @@ export default function DataTable(props) {
 							.map((row, rowi) => {
 								return (
 									<tr key={rowi}>
-										{props.DisplayIndex && (
+										{props.displayIndex && (
 											<td className="align-center">
 												{rowi + pagno * rowcount + 1}
 											</td>
 										)}
 										{row.map((col, i) => {
 											const align =
-												props.head[i].textAlign;
+												props.rowData[i].textAlign;
 											let center =
 												align === "center"
 													? "align-center"
 													: align === "right"
 													? "align-right"
 													: "";
-											return props.head[i].minifyValue ? (
+											return props.rowData[i]
+												.minifyValue ? (
 												<td className={center} key={i}>
 													{!isNaN(col)
 														? minifyValue(col)
@@ -326,9 +329,9 @@ export default function DataTable(props) {
 						<tr>
 							<td
 								colSpan={
-									props.DisplayIndex
-										? props.head.length + 1
-										: props.head.length
+									props.displayIndex
+										? props.rowData.length + 1
+										: props.rowData.length
 								}
 							>
 								<div className="nodata">
@@ -364,7 +367,7 @@ export default function DataTable(props) {
 							}}
 							name="pagecount"
 						>
-							{props.pageCount.map((count, counti) => {
+							{pageCount.map((count, counti) => {
 								return (
 									<option value={count} key={counti}>
 										{count}
@@ -433,9 +436,9 @@ export default function DataTable(props) {
 	);
 }
 DataTable.propTypes = {
-	head: PropTypes.array.isRequired,
-	DisplayIndex: PropTypes.bool,
-	pageCount: PropTypes.array.isRequired,
-	OverallSearch: PropTypes.bool,
-	row: PropTypes.array.isRequired,
+	rowData: PropTypes.array.isRequired,
+	columnData: PropTypes.array.isRequired,
+	pageCount: PropTypes.array,
+	displayIndex: PropTypes.bool,
+	overallSearch: PropTypes.bool,
 };

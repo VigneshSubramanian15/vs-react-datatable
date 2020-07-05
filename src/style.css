@@ -28,7 +28,7 @@
     left: 10px;
     top: 4px;
     line-height: 18px;
-    font-size: 14px;
+    font-size: 0.8rem;
     transition: all 0.3s ease-in-out;
     color: #656565;
     background: #fff;
@@ -57,7 +57,7 @@
     border-radius: 0 7px 0 0;
 }
 .VSDataTable table thead .point svg {
-    font-size: 12px;
+    font-size: 0.7rem;
 }
 .VSDataTable table thead .point svg:nth-child(1) {
     margin: 0 0 0 3px;
@@ -110,7 +110,7 @@
     left: 10px;
     top: 4px;
     line-height: 18px;
-    font-size: 14px;
+    font-size: 0.8rem;
     transition: all 0.3s ease-in-out;
     color: #656565;
     background: #fff;
@@ -152,7 +152,7 @@
     font-size: 50px;
 }
 .VSDataTable table tbody .nodata p {
-    font-size: 21px;
+    font-size: 2rem;
     font-family: fantasy;
 }
 .VSDataTable table tbody td {
@@ -189,7 +189,7 @@
     border-radius: 0 0 7px 7px;
 }
 .VSDataTable .footer .info {
-    font-size: 18px;
+    font-size: 0.8rem;
     font-weight: 500;
     margin: 0 0 0 20px;
 }
@@ -210,7 +210,7 @@
 }
 .VSDataTable .footer span.show, .VSDataTable .footer .pagniation, .VSDataTable .footer span.entries, .VSDataTable .footer .page {
     margin: 0 10px;
-    font-size: 18px;
+    font-size: 0.8rem;
     font-weight: 500;
 }
 .VSDataTable .footer .right {

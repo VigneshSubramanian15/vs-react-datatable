@@ -1,26 +1,128 @@
-> This project is created to simplify the process of publishing a React component to npm. For a full tutorial on publishing React component to npm, please refer to [this guide](https://medium.com/groftware/how-to-publish-your-react-component-on-npm-9cf48d91944d)
+# VS React Data Table
 
-## Guide
-1. Replace contents in `/src` with your React component.
-1. Edit `webpack.config.js`, replace the following:
-	1. `entry: './src/YOUR_COMPONENT.js'` Replace value of `entry` to path to the entry point of your component.
-	1. Replace 	`output.filename` to the name of your component
-	```
-		output: {
-			path: path.resolve('lib'),
-			filename: 'YOUR_COMPONENT.js',
-			libraryTarget: 'commonjs2',
-  	},
-	```
-1. Edit `package.json`, replace the following:
-	1. `"name": "YOUR_PACKAGE_NAME"` Replace the value of `name` to your package name. This will be the name of the package that is published to `npm` and the name that is used when other people install your package using `npm install YOUR_PACKAGE_NAME`.
-	1. Update the values of `version` and `description` to accordingly.
-	1. `"main": "./lib/YOUR_COMPONENT.js"` replace `YOUR_COMPONENT.js` with the name that you've set in `output.filename` during Step #2
-	1. If your component uses any other dependencies, make sure to add them into the `peerDependencies` list.
-1. Building your component by running `npm build` in your command line. This would generate the folder `/lib` which includes your component.
-1. Publishing to [npm](https://www.npmjs.com/)
-	1. Make sure you've [registered an npm account](https://www.npmjs.com/signup)
-	1. Run `npm login` in your command line, and enter your credentials.
-	1. Run `npm publish`, and your React component will be uploaded to npm! You can find it at https://www.npmjs.com/package/[YOUR PACKAGE NAME] or your npm profile.
+VS React Datatable is a fast and flexible DataTable which provides lot of custom filtering options like **Overall Search Filter**, **Column Wide Search Filter** and **Column Wide Range Filter**. 
 
-1. To update your package, make sure you remember to increment the `version` in `package.json`, and then perform Step #5 again.
+- [VS React Data Table](#vs-react-data-table)
+	- [Installation](#installation)
+	- [Simple Implementation](#simple-implementation)
+	- [Advanced Implementation](#advanced-implementation)
+	- [Usage](#usage)
+		- [Props](#props)
+		- [RowData Object Properties](#rowdata-object-properties)
+				- [Note:](#note)
+		- [ColumnData Array Properties](#columndata-array-properties)
+
+## Installation
+    npm i vs-react-datatable
+		(or)
+	yarn add vs-react-datatable
+
+## Simple Implementation
+	 import React from  'react';
+	 import DataTable from  'vs-react-datatable'
+	 
+	 function  App()  {
+		let  pageCount  = [10,  20,  50];
+		let  rowData  = [
+			{  title:  "name",  sortable:  true,  width:  10  },
+			{  title:  "age",  width:  10  },
+		];
+		let  columnData  = [
+			["John",  "30"],
+			["Eric",  "43"],
+		];
+		return (
+			<div>
+				<DataTable
+					rowData={rowData}
+					columnData={columnData}
+					pageCount={pageCount}
+					overallSearch
+				/>
+			</div>
+			);
+	}
+	export default App;
+	
+*Simple Implementation of VS React Data Table*
+![Simple Implementation of VS React Data Table](https://drive.google.com/uc?export=view&id=1GzY1uz2UaHu8uWajWtmzrYpTOkLLZbI6)
+## Advanced Implementation
+
+    import React from  "react";
+	import DataTable from  "vs-react-datatable";
+	import datas from  "./data.json";
+	function  App()  {
+		let  pageCount  = [10,  20,  50];
+		let  rowData  = [
+			{  title:  "Name",  sortable:  true,  filter:  'search'  },
+			{  title:  "Date",  sortable:  true,  filter:  'search'  },
+			{  title:  "Company",  sortable:  true,  filter:  'search'  },
+			{  title:  "Email",  sortable:  true,  filter:  'search'  },
+			{  
+				title:  "Values",  
+				sortable:  true,  
+				filter:  'search',  
+				textAlign:  'center'  
+			},
+			{  
+				title:  "Large_values", 
+				sortable:  true,  
+				filter:  'range',  
+				placeholder: ['min',  'max'],  
+				textAlign:  'center',  minifValue:  true  
+			},
+		];
+		let  columnData  =  datas.data;
+		return (
+			<div>
+				<DataTable
+					rowData={rowData}
+					columnData={columnData}
+					pageCount={pageCount}
+					displayIndex
+				/>
+			</div>
+		);
+	}
+	export default App;
+
+*Advanced Implementation of VS React Data Table*
+![Advanced Implementation of VS React Data Table](https://drive.google.com/uc?export=view&id=1oyygti_Tev6t1ORcyB022RHO0yoN-WNu)
+## Usage
+### Props
+| Prop Name | Type | isRequired | Note
+|--|--|--|--
+| rowData | ArrayOfObject | Required | Header Data Values
+| columnData | ArrayOfArray | Required | List Of Column Values 
+| pageCount | Array | Optional | List Of Values for Page Count
+| displayIndex | Boolean | Optional | If true will Display SerialNumber
+| overallSearch | Boolean | Optional | Enables Table wide search and disables column wide search
+
+### RowData Object Properties
+| Prop Name | Type | isRequired | Default
+|--|--|--|--|--
+| Title | String | Required | -
+| minifyValue | Boolean | Optional | False
+| sortable | Boolean | Optional | False
+| width | Number | Optional | -
+|filter | Pre Defined Values | Optional | null
+| placeholder | String | Optional | null
+| textAlign | Pre Defined Values | Optional | null
+
+
+##### Note: 
+- *minifyValues*: Minify Values Thousand(k) and Millions(M). 
+- *textAlign*:  This is used to align text for each column. Pre defined values  `center | right`. 
+- *filter*: This Properity is used to enable column level search.  Pre defined values 		          			`search | range` search -> enables Text Search in Picrular Column | range -> enabled Numeric range search between two values
+
+### ColumnData Array Properties
+*Format:*
+
+    	[
+			["value1", "value2", "value3", .....],
+			["value1", "value2", "value3", .....],
+			["value1", "value2", "value3", .....],
+			.
+			.
+			.
+		]
