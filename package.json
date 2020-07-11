@@ -1,6 +1,6 @@
 {
 	"name": "vs-react-datatable",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"description": "React DataTable Component with Overall Search, Sort and Column Level Search.",
 	"main": "./lib/DATATABLE.js",
 	"author": "Vignesh Subramanian",

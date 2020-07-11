@@ -96,7 +96,8 @@ VS React Datatable is a fast and flexible DataTable which provides lot of custom
 | columnData | ArrayOfArray | Required | List Of Column Values 
 | pageCount | Array | Optional | List Of Values for Page Count
 | displayIndex | Boolean | Optional | If true will Display SerialNumber
-| overallSearch | Boolean | Optional | Enables Table wide search and disables column wide search
+| overallSearch | Boolean | Optional | Enables Table wide search 
+| columnfilter | Boolean | Optional | Enables column wide search
 
 ### RowData Object Properties
 | Prop Name | Type | isRequired | Default

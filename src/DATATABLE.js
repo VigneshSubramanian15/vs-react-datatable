@@ -10,7 +10,7 @@ import {
 	FaAngleLeft,
 } from "react-icons/fa";
 import PropTypes from "prop-types";
-import "./style.scss";
+import "./style.css";
 export default function DataTable(props) {
 	const completeData = props.columnData;
 	const [column, setcolumn] = useState(completeData);
@@ -20,11 +20,9 @@ export default function DataTable(props) {
 	const [rangeValues, setrangeValues] = useState([]);
 	const [headSorted, setHeadsorted] = useState("");
 	const [searchValues, setsearchValues] = useState({});
+	const [overallSearch, setoverallSearch] = useState("");
 	const pageCount = props.pageCount || [10, 20, 50, 100];
-	useEffect(() => {
-		search();
-		// eslint-disable-next-line
-	}, [searchValues]);
+
 	const sort = (val) => {
 		setHeadsorted(val);
 		setpage(0);
@@ -59,10 +57,52 @@ export default function DataTable(props) {
 			? (Math.abs(Number(labelValue)) / 1.0e3).toFixed(2) + "K"
 			: Math.abs(Number(labelValue).toFixed(2));
 	}
-	const range = (fromsearch) => {
-		let data = fromsearch || completeData;
+	const MasterSearch = (masterSearch, fieldSearch, Range) => {
+		let mastersearch = masterSearch || overallSearch;
+		let fieldsearch = fieldSearch || searchValues;
+		let range = Range || rangeValues;
+		console.log({ mastersearch, fieldsearch, range });
 		let filtered = [];
-		rangeValues.map((val, index) => {
+		let data = completeData;
+
+		//MasterSearch
+		data.map((row) => {
+			row.some((col) => {
+				if (isNaN(col)) {
+					if (
+						col.toLowerCase().search(mastersearch.toLowerCase()) !==
+						-1
+					) {
+						filtered.push(row);
+						return true;
+					}
+				} else {
+					if (col.toString().search(mastersearch) !== -1) {
+						filtered.push(row);
+						return true;
+					}
+				}
+				return null;
+			});
+			return null;
+		});
+		//Column Search
+		Object.keys(fieldsearch).map((key) => {
+			filtered.length && (data = filtered);
+			filtered = [];
+			data &&
+				data.map((row) => {
+					isNaN(row[key]) &&
+						row[key]
+							.toLowerCase()
+							.search(fieldsearch[key].toLowerCase()) !== -1 &&
+						filtered.push(row);
+					return null;
+				});
+			return null;
+		});
+		//Range Search
+		range.map((val, index) => {
 			if (val && val.start && val.end) {
 				filtered.length && (data = filtered);
 				filtered = [];
@@ -76,53 +116,10 @@ export default function DataTable(props) {
 						}
 						return null;
 					});
-				setcolumn(filtered);
-				!fromsearch && search(filtered);
 			}
 			return null;
 		});
-	};
-	const search = (fromfiltered) => {
-		console.log(fromfiltered)
-		let filtered = [];
-		let data = (fromfiltered && fromfiltered.length) ? fromfiltered : completeData;
-		Object.keys(searchValues).map((key) => {
-			filtered.length && (data = filtered);
-			filtered = [];
-			data &&
-				data.map((row) => {
-					isNaN(row[key]) &&
-						row[key]
-							.toLowerCase()
-							.search(searchValues[key].toLowerCase()) !== -1 &&
-						filtered.push(row);
-					return null;
-				});
-			setcolumn(filtered);
-			!fromfiltered && range(filtered);
-			return null;
-		});
-	};
-	const searchAll = (inp) => {
-		let filtered = [];
-		let data = completeData;
-		data.map((row) => {
-			row.some((col) => {
-				if (isNaN(col)) {
-					if (col.toLowerCase().search(inp.toLowerCase()) !== -1) {
-						filtered.push(row);
-						return true;
-					}
-				} else {
-					if (col.toString().search(inp) !== -1) {
-						filtered.push(row);
-						return true;
-					}
-				}
-				return null;
-			});
-			return null;
-		});
+
 		setcolumn(filtered);
 	};
 	const updateSelect = (id, val) => {
@@ -137,9 +134,10 @@ export default function DataTable(props) {
 							<input
 								placeholder=" "
 								onChange={(e) => {
-									searchAll(e.target.value);
+									setoverallSearch(e.target.value);
+									MasterSearch(e.target.value);
 								}}
-								// value={completesearch}
+								value={overallSearch}
 								id="search"
 								type="text"
 							/>
@@ -165,14 +163,16 @@ export default function DataTable(props) {
 									key={i}
 								>
 									{val.title.replace(/_/g, " ")}
-									{val.sortable && <span className={active}>
-										<FaArrowDown /> <FaArrowUp />
-									</span>}
+									{val.sortable && (
+										<span className={active}>
+											<FaArrowDown /> <FaArrowUp />
+										</span>
+									)}
 								</th>
 							);
 						})}
 					</tr>
-					{!props.overallSearch && (
+					{props.columnfilter && (
 						<tr className="filter">
 							{props.displayIndex && <th></th>}
 							{props.rowData.map((val, headIndex) => {
@@ -185,13 +185,13 @@ export default function DataTable(props) {
 												type="text"
 												placeholder=" "
 												onChange={(e) => {
-													const temp = e.target.value;
-													setsearchValues(
-														(searchValues) => ({
-															...searchValues,
-															[headIndex]: temp,
-														})
-													);
+													const temp = {
+														...searchValues,
+														[headIndex]:
+															e.target.value,
+													};
+													setsearchValues(temp);
+													MasterSearch(null, temp);
 												}}
 											/>
 											<label htmlFor={val.title + rand}>
@@ -230,7 +230,12 @@ export default function DataTable(props) {
 															};
 														}
 														setrangeValues(temp);
-														range();
+														// range();
+														MasterSearch(
+															null,
+															null,
+															temp
+														);
 													}}
 												/>
 												<label
@@ -238,8 +243,10 @@ export default function DataTable(props) {
 														val.title + rand + 1
 													}
 												>
-													{val.placeholder ? val.placeholder[0] ||
-														"Min" : "Min"}
+													{val.placeholder
+														? val.placeholder[0] ||
+														  "Min"
+														: "Min"}
 												</label>
 											</div>
 											<div className="lablediv">
@@ -266,14 +273,21 @@ export default function DataTable(props) {
 															};
 														}
 														setrangeValues(temp);
-														range();
+														// range();
+														MasterSearch(
+															null,
+															null,
+															temp
+														);
 													}}
 												/>
 												<label
 													htmlFor={val.title + rand}
 												>
-													{val.placeholder ? val.placeholder[1] ||
-														"Max" : "Max"}
+													{val.placeholder
+														? val.placeholder[1] ||
+														  "Max"
+														: "Max"}
 												</label>
 											</div>
 										</div>
